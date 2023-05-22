@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.pd.benchmark.geode.GemFireConfiguration\
+com.pd.benchmark.geode.HijackedAroundMethod
