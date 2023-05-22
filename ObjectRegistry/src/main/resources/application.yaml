@@ -1,0 +1,20 @@
+spring:
+  jpa:
+    database: postgresql
+    databasePlatform: "org.hibernate.dialect.PostgreSQLDialect"
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://10.0.0.64:5432/benchmark
+    username: postgres
+    password: postgrespassword
+    driverClassName: org.postgresql.Driver
+  logging:
+    pattern:
+      console: "%d %-5level %logger : %msg%n"
+    level:
+      org.spring.framework: info
+      org.hibernate: debug
+server:
+  port: 8088 

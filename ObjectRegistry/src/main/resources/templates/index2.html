@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Object Registry</title>
+</head>
+<body>
+<div align="center">
+	<h1>Object List</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Data Object Name</th>
+					<th>Filter?</th>
+					<th>Filter Criteria Map</th>
+					<th>Has Sensitive Data?</th>
+					<th>Redaction Map</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="objectRegistry : ${listObjectRegistries}">
+					<td th:text="${objectRegistry.dataObjectName}"> </td>
+					<td th:checked="${objectRegitry.dataObjectFiltering}"></td>
+					<td th:text="${objectRegistry.filterAttributeName}"></td>
+					<td th:checked="${objectRegistry.hostSensitiveData}"></td>
+					<td th:each="protectedAttribute : ${objectRegitry.protectedAttriute}">
+						<ul>
+							<li th:text="${protectedAttribute.attributeSetterName}...${protectedAttribute.attributeMaskValue}"></li>
+						</ul>
+					</td>
+				</tr>	 
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
