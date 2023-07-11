@@ -21,6 +21,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.util.StopWatch;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.pd.benchmark.dataobjects.BenchmarkConstants;
 import com.pd.benchmark.fgacdataobjects.DataAccessContext;
@@ -56,6 +57,27 @@ public class HijackedAroundMethod {
 		kafkaLogProducer = new KafkaProducer<String, String>(kafkaProducerProperties);
 		String hashMapPopulated = doPopulateHashMap();
 		System.out.println(hashMapPopulated);
+	}
+
+	@Around("execution(public * org.springframework.data.mongodb.core.MongoTemplate.*(..))")
+	public Object mongoTemplateIntercept(ProceedingJoinPoint pjp) throws Throwable {
+		String methodName = pjp.getSignature().getName();
+		System.out.println("Intercepting MongoDbTemplate, methodName: "+methodName);
+		Object[] args = pjp.getArgs();
+	      if(args.length>0){
+	          for (int i = 0; i < args.length; i++) {
+	             System.out.println("arg "+(i+1)+": "+args[i]);
+	          }
+	       }
+	      if(methodName.equalsIgnoreCase("dropCollection")) {
+	    	  return null;
+	      }
+		if(methodName.equalsIgnoreCase("getconverter")) {
+			return pjp.proceed(args);
+		} else {
+			System.out.println("running myAdvice...");
+			return myAdvice(pjp);
+		}
 	}
 
 	@Around("execution(public * org.springframework.data.repository.Repository+.*(..))")
@@ -112,6 +134,7 @@ public class HijackedAroundMethod {
 			accessContext.setOperationTimeStamp(LocalDateTime.now());
 			StopWatch accessLogTimer = new StopWatch();
 			accessLogTimer.start();
+			mapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			String accessContextString = CompressionUtil.compressAndReturnB64(mapper.writeValueAsString(accessContext));
 			
 			ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(BenchmarkConstants.LOG_TOPIC_NAME, 
@@ -134,7 +157,7 @@ public class HijackedAroundMethod {
 			filterRedactTimer.start();
 			System.out.println("start filtering: "+LocalDateTime.now());
 			ObjectRegistry objectRegistry = checkFilteringRequired(objects);
-			if(objectRegistry.getDataObjectFiltering()) {
+			if(objectRegistry !=null &&  objectRegistry.getDataObjectFiltering()) {
 				List<String> cagList= getDistinctCagList(objects, objectRegistry);
 					System.out.println("Returned distinct cag list: "+LocalDateTime.now());
 		
