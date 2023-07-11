@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import com.pd.benchmark.dataobjects.BenchmarkConstants;
@@ -17,6 +20,9 @@ import com.pd.benchmark.dataobjects.StatisticRecord;
 public class BenchmarkLogicTarget extends BenchMarkLogic{
 	@Autowired
 	private PersonRepository personRepository;
+	
+	@Autowired
+	private MongoTemplate mongoTemplate;
 	
 	
 	protected void runInserts(Integer setKeyInteger) {
@@ -153,5 +159,30 @@ public class BenchmarkLogicTarget extends BenchMarkLogic{
 		return persons;
 	}
 	
+	
+	public List<Person> findByLastNameTemplate(String lastName){
+		long start = System.nanoTime();
+		mongoTemplate.dropCollection(Person.class);
+		Query query = new Query();
+		query.addCriteria(Criteria.where("lastName").is(lastName));
+		List<Person> persons = mongoTemplate.find(query,Person.class,"person");
+		long finish = System.nanoTime();
+		long timeElapsed = finish - start;
+//		if(persons != null ) {
+//			Iterator<Person> iterator = persons.iterator();
+//			while(iterator.hasNext()) {
+//				Person person = iterator.next();
+//				System.out.println(" id: "+person.getId()
+//				+" first name: "+person.getFirstName()
+//				+"  last name: "+person.getLastName()
+//				+"     gender: "+person.getGender()
+//				+"        dob: "+person.getDateOfBirth()
+//				+" clientName: "+person.getClientName()				
+//				);
+//			}
+
+//		}
+		return persons;
+	}
 	
 }

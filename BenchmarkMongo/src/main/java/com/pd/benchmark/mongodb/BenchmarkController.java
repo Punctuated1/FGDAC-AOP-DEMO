@@ -148,6 +148,22 @@ public class BenchmarkController {
 		return responseTxt;
 	}
 
+	@GetMapping("/findByLastNameTemplate{name}")
+	public String findByLastNameTemplate(String name) {
+		// ...
+		System.out.println("Enter findByLastNameTemplate "+LocalDateTime.now());
+		long start = System.nanoTime();
+		List<Person> persons = this.benchmarkLogicTarget.findByLastNameTemplate(name);
+		long finish = System.nanoTime();
+		long timeElapsed = finish - start;
+		
+		String timeElapsedStr = FORMATTER.format(timeElapsed)+" Nanos, ";
+		String responseMsgTmplt = "done with finaByLastNameTemplate for %s -- %s items returned, elapsed time: %s."; 
+		String responseTxt = String.format(responseMsgTmplt, name, persons.size(),timeElapsedStr);
+		System.out.println(responseTxt);
+		return responseTxt;
+	}
+
 	@GetMapping("/report")
 	public String report() {
 		System.out.println("Enter report "+LocalDateTime.now());
