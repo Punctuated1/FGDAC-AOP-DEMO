@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 
 public final class BenchmarkConstants {
 	public static final int NUMBER_FIRST_NAMES = 1000; 
-	public static final int TARGET_GENERATE = 1000000;
+	public static final int TARGET_GENERATE = 100000;
 	public static final String GENDER_MALE = "Male";
 	public static final String GENDER_FEMALE = "Female";
 	public static final int MULTIPLIER_ACTIVE_20_PERCENT = 16;
@@ -13,7 +13,7 @@ public final class BenchmarkConstants {
 	public static final String BENCHMARK_TARGET_POSTGRES = "Postgres";
 	public static final String BENCHMARK_ENVIRONMENT_UBUNTU = "Ubuntu";
 	public static final String BENCHMARK_ENVIRONMENT_ECLIPSE = "Eclipse";
-	public static final int BENCHMARK_ENVIRONMENT_ECLIPSE_INSERT_COUNT = 1000000;
+	public static final int BENCHMARK_ENVIRONMENT_ECLIPSE_INSERT_COUNT = 100000;
 	public static final int BENCHMARK_ENVIRONMENT_ECLIPSE_NUMBER_SETS = 1;
 	public static final int BENCHMARK_GENERATE_MULTIPLIER = 1;
 	
