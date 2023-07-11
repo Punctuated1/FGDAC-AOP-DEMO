@@ -3,11 +3,6 @@ AOP Interceptor fro Spring Data Implementations to filter and redact data based 
 
 <UL>The demo consists of eight Spring Boot projects:
 <LI>The first of note (BenchmarkGeode) contains the AOP Around Interceptor class (HijackedAroundMethod.java)) that proxies access to any public method on a Spring Data Repository (including custom interface methods added to a repository interface), or any public method on MongoDbTemplate </LI>
-<LI>The second is a set of common data objects and utlitty classes (obsolete but not yet cleaned up)</LI>
-  <LI>The third is a benchmark application for mongodb that includes the AOP Interceptor library</LI>
-<LI>The fourth is a benchmark application for Postgres that includes the AOP Interceptor library</LI>
-  <LI>The fifth is a Kafka Consumer that consumes data access log events from the AOP Inteceptor and writes them to a MongoDB Collection</LI>
-  <LI>The sixth is a UI for Object Registry component used by the AOP Registry</LI>
-  <LI>The seventh contains DDL for the tables governing the behavior of the Interceptor</>
-    <li>Test Data Generaton utility</li>
-    </UL>
+<LI>The second project of note is BenchmarkMongo uses both Spring Boot Data Repository and MongoDbTmplate to access a mongoDb collection of person.When configured to include and configure the BenchmarkGedoe project with interceptor the finbylastname process demonstrates the filtering and redaction capability</LI>
+<LI>Another project of note is BenchmarkPostgres demonstrates the interceptor applied to a postgres repository</LI>
+</UL>
